@@ -6,7 +6,8 @@ import authRoutes from "./routes/authRoutes.js";
 import getAllJobs from "./routes/getAlljobs.js";
 import jobDetails from "./routes/jobDetails.js"; // Separate GET route
 import applyJob from "./routes/applyJob.js";   // Separate POST route
-import contact from "./routes/contact.js"
+import contact from "./routes/contact.js";
+import profile from "./routes/profile.js"
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use("/api/jobs", getAllJobs);  // ✅ Handles GET all jobs
 app.use("/api/job", jobDetails);  // ✅ Handles GET /api/jobs/:id
 app.use("/api/apply", applyJob);   // ✅ Handles POST /api/apply/:id
 app.use("/api/contact", contact);
+app.use("/api/profile", profile);
 
 // Sync Database
 sequelize.sync()
