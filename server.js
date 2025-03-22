@@ -3,8 +3,10 @@ import express from "express";
 import cors from "cors";
 import sequelize from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
-import getAlljobs from "./routes/getAlljobs.js";
-////import applyJob from "./routes/applyJob.js";
+import getAllJobs from "./routes/getAlljobs.js";
+import jobDetails from "./routes/jobDetails.js"; // Separate GET route
+import applyJob from "./routes/applyJob.js";   // Separate POST route
+import contact from "./routes/contact.js"
 
 dotenv.config();
 
@@ -16,8 +18,10 @@ app.use(cors());
 
 // Define Routes
 app.use("/api/users", authRoutes);
-app.use("/api/jobs", getAlljobs); // Mount getAlljobs properly
-//app.use("/api/applicants", applyJob);
+app.use("/api/jobs", getAllJobs);  // ✅ Handles GET all jobs
+app.use("/api/job", jobDetails);  // ✅ Handles GET /api/jobs/:id
+app.use("/api/apply", applyJob);   // ✅ Handles POST /api/apply/:id
+app.use("/api/contact", contact);
 
 // Sync Database
 sequelize.sync()

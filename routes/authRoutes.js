@@ -27,7 +27,15 @@ router.post("/signup", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(201).json({ message: "Signup successful", token, user: newUser });
+    // ✅ Remove password before sending response
+    const userResponse = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role,
+    };
+
+    res.status(201).json({ message: "Signup successful", token, user: userResponse });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -50,7 +58,15 @@ router.post("/login", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.json({ message: "Login successful", token, user });
+    // ✅ Remove password before sending response
+    const userResponse = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+
+    res.json({ message: "Login successful", token, user: userResponse });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
