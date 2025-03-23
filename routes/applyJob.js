@@ -37,11 +37,26 @@ router.post("/:id", verifyToken, async (req, res) => {
       return res.status(400).json({ error: "Invalid Job ID" });
     }
 
-    // ✅ Store application in database
-    await sequelize.query(
-      "INSERT INTO applicants(user_id, email, name, job_id, created_on) VALUES (?, ?, ?, ?, NOW())",
+    // ✅ Fetch hr_id from the job table using job_id
+    const [job] = await sequelize.query(
+      "SELECT hr_id FROM swapnil_db.job WHERE id = ?",
       {
-        replacements: [user_id, email, name, parsedJobId],
+        replacements: [parsedJobId],
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+
+    if (!job) {
+      return res.status(404).json({ error: "Job not found" });
+    }
+
+    const hr_id = job.hr_id;
+
+    // ✅ Store application in the applicants table with hr_id
+    await sequelize.query(
+      "INSERT INTO swapnil_db.applicants (user_id, email, name, job_id, created_on, hr_id) VALUES (?, ?, ?, ?, NOW(), ?)",
+      {
+        replacements: [user_id, email, name, parsedJobId, hr_id],
         type: sequelize.QueryTypes.INSERT,
       }
     );

@@ -27,7 +27,7 @@ const verifyToken = (req, res, next) => {
 router.get('/', verifyToken, async (req, res) => {
   try {
     const [jobs] = await sequelize.query(`
-      SELECT id, category, company, description, location, title FROM job;
+      SELECT id, category, company, description, location, title, hr_id FROM job;
     `);
     res.status(200).json(jobs);
   } catch (error) {
